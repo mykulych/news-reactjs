@@ -1,10 +1,16 @@
 import { Box } from "@mui/material";
+import { Header } from "./Header";
+import { Footer } from "./Footer";
 
 function Layout({ children }) {
   return (
-    <Box sx={{ width: "100%", maxWidth: "1600px", m: "0 auto" }}>
-      {children}
-    </Box>
+    <>
+      <Header />
+      <Box sx={{ width: "100%", maxWidth: "1600px", m: "0 auto" }}>
+        {children}
+      </Box>
+      <Footer />
+    </>
   );
 }
 

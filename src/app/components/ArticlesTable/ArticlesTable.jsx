@@ -8,7 +8,12 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import { Link } from "react-router-dom";
 
-function ArticlesTable({ rows }) {
+function ArticlesTable({ rows, isLoading }) {
+  if (isLoading) return "Loading...";
+  
+  if (!rows || rows?.length === 0) return "Empty";
+
+
   return (
     <TableContainer component={Paper}>
       <Table sx={{ minWidth: 650 }} aria-label="simple table">

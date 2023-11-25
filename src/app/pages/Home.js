@@ -1,15 +1,28 @@
-import { ArticlesTable } from "../components";
+import { useForm } from "react-hook-form";
+import { ArticlesTable, SearchField } from "../components";
 import { useGetArticlesQuery } from "../store/api";
+import debounce from "debounce";
+import { useState } from "react";
 
 function Home() {
-  const { data, isFetching } = useGetArticlesQuery();
-  console.log("data: ", data);
+  const [search, setSearch] = useState("");
+  const { data, isFetching } = useGetArticlesQuery({ search });
 
-  if (isFetching) return "Loading...";
+  function onSearchChange(event) {
+    const value = event.target.value;
+    if (value) {
+      setSearch(value);
+    }
+  }
 
   return (
     <>
-      <ArticlesTable rows={data?.articles} />
+      <SearchField
+        id="search"
+        label="Search article"
+        onChange={debounce(onSearchChange, 500)}
+      />
+      <ArticlesTable rows={data?.articles} isLoading={isFetching} />
     </>
   );
 }
