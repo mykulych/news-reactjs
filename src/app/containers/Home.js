@@ -13,9 +13,11 @@ import debounce from "debounce";
 import { Button, TablePagination, Typography } from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
+const DEFAULT_SEARCH = "Sport"
+
 function HomeContainer() {
   const [values, setValues] = useState({
-    search: "Apple",
+    search: DEFAULT_SEARCH,
   });
   const [paginationState, setPaginationState] = useState({
     page: 0,
@@ -23,8 +25,9 @@ function HomeContainer() {
   });
   const { data, isFetching, error } = useGetArticlesQuery({
     ...values,
+    ...paginationState,
+    search: values?.search || DEFAULT_SEARCH,
     page: paginationState.page + 1,
-    pageSize: paginationState.pageSize,
   });
   const [showFilters, setShowFilters] = useState(false);
 
@@ -44,7 +47,6 @@ function HomeContainer() {
   }
 
   function handleChangePage(event, newPage) {
-    console.log("newPage: ", newPage);
     setPaginationState((prev) => ({ ...prev, page: newPage }));
   }
 
@@ -58,7 +60,7 @@ function HomeContainer() {
 
   if (error) {
     console.error(error);
-    return <Error />;
+    return <Error message={error?.data?.message} />;
   }
 
   return (
@@ -104,7 +106,7 @@ function HomeContainer() {
           />
         </Box>
       ) : null}
-      {data?.articles?.length ? (
+      {data?.articles?.length !== 0 ? (
         <>
           <ArticlesTable rows={data?.articles} isLoading={isFetching} />
           {!isFetching ? (

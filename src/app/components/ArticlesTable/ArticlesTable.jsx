@@ -35,7 +35,7 @@ function ArticlesTable({ rows, isLoading }) {
               <TableCell component="th" scope="row" align="center">
                 <img
                   src={row.urlToImage}
-                  alt={row.title}
+                  alt={"article image"}
                   style={{
                     width: 100,
                     height: 100,

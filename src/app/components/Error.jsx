@@ -1,6 +1,6 @@
 import { Box, Typography } from "@mui/material";
 
-function Error() {
+function Error({message}) {
   return (
     <Box
       sx={{
@@ -10,8 +10,8 @@ function Error() {
         height: "60vh",
       }}
     >
-      <Typography variant="h3">
-        An error occurred, please try again later!
+      <Typography variant="h3" sx={{textAlign: "center"}}>
+        {message || "An error occurred, please try again later!" }
       </Typography>
     </Box>
   );
