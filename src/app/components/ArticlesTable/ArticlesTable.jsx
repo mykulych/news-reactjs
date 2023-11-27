@@ -6,13 +6,13 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import LinkIcon from "@mui/icons-material/Link";
 import { Link } from "react-router-dom";
 
 function ArticlesTable({ rows, isLoading }) {
   if (isLoading) return "Loading...";
-  
-  if (!rows || rows?.length === 0) return "Empty";
 
+  if (!rows || rows?.length === 0) return "Empty";
 
   return (
     <TableContainer component={Paper}>
@@ -43,12 +43,16 @@ function ArticlesTable({ rows, isLoading }) {
                   }}
                 />
               </TableCell>
-              <TableCell>{row.title}</TableCell>
+              <TableCell>
+                <Link to={row.title}>{row.title}</Link>
+              </TableCell>
               <TableCell>{row.author}</TableCell>
               <TableCell>{row.description}</TableCell>
               <TableCell>{row.publishedAt}</TableCell>
               <TableCell>
-                <Link to={row.title}>Link</Link>
+                <Link to={row.url} target="_blank">
+                  <LinkIcon fontSize="large" />{" "}
+                </Link>
               </TableCell>
             </TableRow>
           ))}

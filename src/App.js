@@ -1,19 +1,20 @@
 import { RouterProvider, createBrowserRouter } from "react-router-dom";
 import Home from "./app/pages/Home";
+import Article from "./app/pages/Article";
 import { Provider } from "react-redux";
 import { store } from "./app/store";
 import { Layout } from "./app/components";
 
 const router = createBrowserRouter([
   {
-    id: "home",
+    id: "articles",
     path: "/",
     Component: Home,
   },
   {
     id: "article",
-    path: "/article",
-    Component: () => "Article",
+    path: "/:articleTitle",
+    Component: () => <Article />,
   },
 ]);
 
