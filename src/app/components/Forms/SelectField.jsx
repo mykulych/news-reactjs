@@ -1,7 +1,7 @@
 import Box from "@mui/material/Box";
 import Select from "@mui/material/Select";
 import MenuItem from "@mui/material/MenuItem";
-import { InputLabel, Typography } from "@mui/material";
+import { InputLabel } from "@mui/material";
 
 function SelectField({ id, value, label, onChange, options }) {
   return (

@@ -4,21 +4,29 @@ import { useState } from "react";
 import { countriesConstants, categoriesConstants } from "../utils/";
 import Box from "@mui/material/Box";
 import debounce from "debounce";
-import { Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
+import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 function HomeContainer() {
   const [values, setValues] = useState({
-    search: "",
-    country: "",
-    category: "",
+    search: "Apple",
   });
   const { data, isFetching } = useGetArticlesQuery(values);
+  const [showFilters, setShowFilters] = useState(false);
 
   function onChange(event) {
     setValues((prev) => ({
       ...prev,
       [event.target.name]: event.target.value,
     }));
+  }
+
+  function handleShowFilters() {
+    if (showFilters) {
+      setValues((prev) => ({ search: prev.search }));
+    }
+
+    setShowFilters((prev) => !prev);
   }
 
   return (
@@ -31,28 +39,39 @@ function HomeContainer() {
         }}
       >
         <Typography variant="h4">Formula Top Headlines</Typography>
-        <SearchField
-          id="search"
-          label="Search article"
-          onChange={debounce(onChange, 500)}
-        />
+        <Box sx={{ display: "flex", gap: 2 }}>
+          <SearchField
+            id="search"
+            label="Search article"
+            onChange={debounce(onChange, 500)}
+          />
+          <Button
+            startIcon={<FilterAltIcon />}
+            variant="contained"
+            onClick={handleShowFilters}
+          >
+            Filters
+          </Button>
+        </Box>
       </Box>
-      <Box sx={{ display: "flex", gap: 3, width: "50%" }}>
-        <SelectField
-          id="country"
-          value={values.country}
-          label="Country"
-          onChange={onChange}
-          options={countriesConstants}
-        />
-        <SelectField
-          id="category"
-          value={values.category}
-          label="Category"
-          onChange={onChange}
-          options={categoriesConstants}
-        />
-      </Box>
+      {showFilters ? (
+        <Box sx={{ display: "flex", gap: 3, width: "50%" }}>
+          <SelectField
+            id="country"
+            value={values.country}
+            label="Country"
+            onChange={onChange}
+            options={countriesConstants}
+          />
+          <SelectField
+            id="category"
+            value={values.category}
+            label="Category"
+            onChange={onChange}
+            options={categoriesConstants}
+          />
+        </Box>
+      ) : null}
       <ArticlesTable rows={data?.articles} isLoading={isFetching} />
     </Box>
   );
