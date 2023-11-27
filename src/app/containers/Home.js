@@ -4,14 +4,22 @@ import { useState } from "react";
 import { countriesConstants, categoriesConstants } from "../utils/";
 import Box from "@mui/material/Box";
 import debounce from "debounce";
-import { Button, Typography } from "@mui/material";
+import { Button, TablePagination, Typography } from "@mui/material";
 import FilterAltIcon from "@mui/icons-material/FilterAlt";
 
 function HomeContainer() {
   const [values, setValues] = useState({
     search: "Apple",
   });
-  const { data, isFetching } = useGetArticlesQuery(values);
+  const [paginationState, setPaginationState] = useState({
+    page: 0,
+    pageSize: 10,
+  });
+  const { data, isFetching } = useGetArticlesQuery({
+    ...values,
+    page: paginationState.page + 1,
+    pageSize: paginationState.pageSize,
+  });
   const [showFilters, setShowFilters] = useState(false);
 
   function onChange(event) {
@@ -27,6 +35,19 @@ function HomeContainer() {
     }
 
     setShowFilters((prev) => !prev);
+  }
+
+  function handleChangePage(event, newPage) {
+    console.log("newPage: ", newPage);
+    setPaginationState((prev) => ({ ...prev, page: newPage }));
+  }
+
+  function handleChangeRowsPerPage(event) {
+    setPaginationState((prev) => ({
+      ...prev,
+      pageSize: parseInt(event.target.value, 10),
+      page: 0,
+    }));
   }
 
   return (
@@ -73,6 +94,14 @@ function HomeContainer() {
         </Box>
       ) : null}
       <ArticlesTable rows={data?.articles} isLoading={isFetching} />
+      <TablePagination
+        component="div"
+        count={data?.totalResults}
+        page={paginationState.page}
+        onPageChange={handleChangePage}
+        rowsPerPage={paginationState.pageSize}
+        onRowsPerPageChange={handleChangeRowsPerPage}
+      />
     </Box>
   );
 }

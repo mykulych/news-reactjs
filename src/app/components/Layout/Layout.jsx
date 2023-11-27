@@ -8,8 +8,8 @@ function Layout({ children }) {
       <Header />
       <Box sx={{ width: "100%", maxWidth: "1600px", m: "0 auto" }}>
         {children}
+        <Footer />
       </Box>
-      <Footer />
     </>
   );
 }

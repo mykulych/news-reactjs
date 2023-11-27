@@ -7,17 +7,15 @@ export const newsApi = createApi({
   }),
   endpoints: (build) => ({
     getArticles: build.query({
-      query: ({search, country, category}) => ({
+      query: ({search, country, category, page, pageSize}) => ({
         url: "top-headlines",
         params: {
           apiKey: process.env.REACT_APP_NEWS_API_KEY,
           q: search,
           country,
           category,
-          // sortBy: "popularity",
-          // from: "2023-11-24",
-          // page: 1,
-          // pageSize: 10
+          page,
+          pageSize
         },
       }),
     }),
