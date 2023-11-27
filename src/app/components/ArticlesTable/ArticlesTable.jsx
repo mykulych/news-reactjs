@@ -8,11 +8,10 @@ import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import LinkIcon from "@mui/icons-material/Link";
 import { Link } from "react-router-dom";
+import { Spinner } from "../Spinner";
 
 function ArticlesTable({ rows, isLoading }) {
-  if (isLoading) return "Loading...";
-
-  if (!rows || rows?.length === 0) return "Empty";
+  if (isLoading) return <Spinner />
 
   return (
     <TableContainer component={Paper}>

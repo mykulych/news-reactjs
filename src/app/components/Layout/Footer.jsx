@@ -8,7 +8,7 @@ function Footer() {
         justifyContent: "space-between",
         alignItems: "end",
         paddingY: 4,
-        marginTop: 10
+        marginTop: 10,
       }}
     >
       <Box sx={{ display: "flex", flexDirection: "column", gap: 1 }}>

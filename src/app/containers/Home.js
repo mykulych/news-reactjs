@@ -1,4 +1,10 @@
-import { ArticlesTable, SearchField, SelectField } from "../components";
+import {
+  ArticlesTable,
+  Error,
+  NoResults,
+  SearchField,
+  SelectField,
+} from "../components";
 import { useGetArticlesQuery } from "../store/api";
 import { useState } from "react";
 import { countriesConstants, categoriesConstants } from "../utils/";
@@ -15,7 +21,7 @@ function HomeContainer() {
     page: 0,
     pageSize: 10,
   });
-  const { data, isFetching } = useGetArticlesQuery({
+  const { data, isFetching, error } = useGetArticlesQuery({
     ...values,
     page: paginationState.page + 1,
     pageSize: paginationState.pageSize,
@@ -48,6 +54,11 @@ function HomeContainer() {
       pageSize: parseInt(event.target.value, 10),
       page: 0,
     }));
+  }
+
+  if (error) {
+    console.error(error);
+    return <Error />;
   }
 
   return (
@@ -93,15 +104,23 @@ function HomeContainer() {
           />
         </Box>
       ) : null}
-      <ArticlesTable rows={data?.articles} isLoading={isFetching} />
-      <TablePagination
-        component="div"
-        count={data?.totalResults}
-        page={paginationState.page}
-        onPageChange={handleChangePage}
-        rowsPerPage={paginationState.pageSize}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
+      {data?.articles?.length ? (
+        <>
+          <ArticlesTable rows={data?.articles} isLoading={isFetching} />
+          {!isFetching ? (
+            <TablePagination
+              component="div"
+              count={data?.totalResults}
+              page={paginationState.page}
+              onPageChange={handleChangePage}
+              rowsPerPage={paginationState.pageSize}
+              onRowsPerPageChange={handleChangeRowsPerPage}
+            />
+          ) : null}
+        </>
+      ) : (
+        <NoResults content="No results found!" />
+      )}
     </Box>
   );
 }
